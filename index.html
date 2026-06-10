@@ -22,7 +22,11 @@
     font-size: clamp(80px, 20vw, 180px); line-height: 1;
     filter: drop-shadow(0 0 30px rgba(255,255,255,.35));
     animation: floatIn 1.6s cubic-bezier(.2,.8,.2,1) both, bob 3.6s ease-in-out 1.6s infinite;
-    cursor: pointer;
+    cursor: pointer; position: relative; display: inline-block;
+  }
+  .sausage {
+    position: absolute; left: 12%; bottom: 14%; font-size: .32em;
+    transform: rotate(-14deg); filter: drop-shadow(0 4px 6px rgba(0,0,0,.45));
   }
   @keyframes floatIn {
     0% { transform: translate(-60vw, -30vh) scale(.4) rotate(-12deg); opacity: 0; }
@@ -33,6 +37,7 @@
   h1 { font-size: clamp(22px, 5vw, 40px); font-weight: 800; margin-top: 18px; letter-spacing: .5px;
        animation: rise 1s ease .9s both; }
   p  { font-size: clamp(14px, 3vw, 18px); color: #c9c3f0; margin-top: 10px; animation: rise 1s ease 1.3s both; }
+  .note { font-style: italic; color: #ffd1e8; margin-top: 6px; animation: rise 1s ease 1.5s both; }
   .btn {
     margin-top: 26px; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer;
     font-size: 15px; font-weight: 700; color: #2a1640;
@@ -53,9 +58,10 @@
 </head>
 <body>
   <div class="stars" id="stars"></div>
-  <div class="dove" id="dove" title="Klick mich 🤍">🕊️</div>
+  <div class="dove" id="dove" title="Klick mich 🤍">🕊️<span class="sausage">🌭</span></div>
   <h1>Lass uns Frieden schließen 🤍</h1>
   <p>Diese Taube ist für dich — und sie bringt nur Liebe.</p>
+  <p class="note">Die Taube ist für dich und bringt meinem Wurstfredl eine Wurst. 🌭</p>
   <button class="btn" id="burst">Frieden? 💕</button>
 
 <script>
@@ -99,7 +105,7 @@
   document.getElementById('dove').addEventListener('click', (e) => burst(24, atClick(e)));
   document.getElementById('burst').addEventListener('click', (e) => {
     burst(44, atClick(e));
-    document.querySelector('h1').textContent = 'Ja. Immer. 🤍';
+    document.querySelector('h1').textContent = 'Gemeinsam Wurstelfred sein. 🌭🤍';
     document.querySelector('p').textContent = 'Frieden. 🕊️';
   });
 </script>
