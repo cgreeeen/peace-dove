@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🕊️ Friedenstaube</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(1200px 800px at 50% 30%, #2a2350 0%, #161235 45%, #0b0a1f 100%);
+    color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; position: relative; user-select: none;
+  }
+  .stars { position: fixed; inset: 0; pointer-events: none; }
+  .stars span { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; opacity: .5; animation: twinkle 3s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity: .15 } 50% { opacity: .8 } }
+
+  .dove {
+    font-size: clamp(80px, 20vw, 180px); line-height: 1;
+    filter: drop-shadow(0 0 30px rgba(255,255,255,.35));
+    animation: floatIn 1.6s cubic-bezier(.2,.8,.2,1) both, bob 3.6s ease-in-out 1.6s infinite;
+    cursor: pointer;
+  }
+  @keyframes floatIn {
+    0% { transform: translate(-60vw, -30vh) scale(.4) rotate(-12deg); opacity: 0; }
+    100% { transform: translate(0,0) scale(1) rotate(0); opacity: 1; }
+  }
+  @keyframes bob { 0%,100% { transform: translate(0,0) rotate(-2deg) } 50% { transform: translate(12px,-18px) rotate(3deg) } }
+
+  h1 { font-size: clamp(22px, 5vw, 40px); font-weight: 800; margin-top: 18px; letter-spacing: .5px;
+       animation: rise 1s ease .9s both; }
+  p  { font-size: clamp(14px, 3vw, 18px); color: #c9c3f0; margin-top: 10px; animation: rise 1s ease 1.3s both; }
+  .btn {
+    margin-top: 26px; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer;
+    font-size: 15px; font-weight: 700; color: #2a1640;
+    background: linear-gradient(90deg, #ffd1e8, #fff);
+    box-shadow: 0 8px 30px rgba(255,180,220,.4); animation: rise 1s ease 1.7s both;
+    transition: transform .15s; }
+  .btn:hover { transform: translateY(-2px) scale(1.04); }
+  @keyframes rise { 0% { opacity: 0; transform: translateY(16px) } 100% { opacity: 1; transform: translateY(0) } }
+
+  .heart { position: fixed; bottom: -40px; font-size: 26px; pointer-events: none; will-change: transform, opacity;
+           animation: floatUp var(--dur) ease-in forwards; }
+  @keyframes floatUp {
+    0%   { transform: translateX(0) translateY(0) scale(.4) rotate(0); opacity: 0; }
+    12%  { opacity: 1; }
+    100% { transform: translateX(var(--dx)) translateY(-108vh) scale(var(--sc)) rotate(var(--rot)); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="dove" id="dove" title="Klick mich 🤍">🕊️</div>
+  <h1>Lass uns Frieden schließen 🤍</h1>
+  <p>Diese Taube ist für dich — und sie bringt nur Liebe.</p>
+  <button class="btn" id="burst">Frieden? 💕</button>
+
+<script>
+  // starfield
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('span');
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top = Math.random() * 100 + 'vh';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (2 + Math.random() * 3.5) + 's';
+    stars.appendChild(s);
+  }
+
+  const EMOJIS = ['❤️','💕','💖','🤍','💗','💝','🩷'];
+  function spawnHeart(x) {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = EMOJIS[(Math.random() * EMOJIS.length) | 0];
+    const left = x !== undefined ? x : (10 + Math.random() * 80);
+    h.style.left = left + 'vw';
+    h.style.fontSize = (18 + Math.random() * 26) + 'px';
+    h.style.setProperty('--dx', ((Math.random() - 0.5) * 220) + 'px');
+    h.style.setProperty('--sc', (0.8 + Math.random() * 0.9).toFixed(2));
+    h.style.setProperty('--rot', ((Math.random() - 0.5) * 90) + 'deg');
+    h.style.setProperty('--dur', (4 + Math.random() * 3).toFixed(1) + 's');
+    document.body.appendChild(h);
+    h.addEventListener('animationend', () => h.remove());
+  }
+
+  // gentle continuous stream once the dove has arrived
+  setTimeout(() => setInterval(() => spawnHeart(), 320), 1600);
+
+  function burst(n, originVw) {
+    for (let i = 0; i < n; i++) setTimeout(() => spawnHeart(originVw + (Math.random() - 0.5) * 16), i * 45);
+  }
+  // a welcome burst from the dove
+  setTimeout(() => burst(28, 50), 1700);
+
+  const atClick = (e) => (e.clientX / window.innerWidth) * 100;
+  document.getElementById('dove').addEventListener('click', (e) => burst(24, atClick(e)));
+  document.getElementById('burst').addEventListener('click', (e) => {
+    burst(44, atClick(e));
+    document.querySelector('h1').textContent = 'Ja. Immer. 🤍';
+    document.querySelector('p').textContent = 'Frieden. 🕊️';
+  });
+</script>
+</body>
+</html>
